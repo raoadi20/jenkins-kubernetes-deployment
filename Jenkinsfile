@@ -14,7 +14,7 @@ pipeline {
     steps {
         script {
             // Specify the current directory (.) as the build context
-            dockerImage = docker.build(dockerimagename, '.')
+            dockerImage = docker.build(dockerimagename, 'Dockerfile')
         }
     }
 }
