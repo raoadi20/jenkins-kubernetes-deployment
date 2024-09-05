@@ -11,12 +11,13 @@ pipeline {
       }
     }
     stage('Build image') {
-      steps{
+    steps {
         script {
-          dockerImage = docker.build dockerimagename
+            // Specify the current directory (.) as the build context
+            dockerImage = docker.build(dockerimagename, '.')
         }
-      }
     }
+}
     stage('Pushing Image') {
       environment {
           registryCredential = 'dockerhub-credentials'
