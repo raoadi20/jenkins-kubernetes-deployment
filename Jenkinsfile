@@ -22,7 +22,16 @@ pipeline {
                 sh 'npm test'
             }
         }
-        
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh 'docker build -t nodejs-app .'
+                }
+            }
+        }
+
         stage('Login to Docker Hub') {
             steps {
                 script {
@@ -32,13 +41,12 @@ pipeline {
             }
         }
         
-        stage('Staging Deployment') {
+        stage('Staging Deployment on Development Server') {
             steps {
                 script {
-                    // Staging on Development Server
                     // Stop any existing container
-                    sh 'docker ps -a --format "{{.Names}}" | grep nodejs-prod || true && docker stop nodejs-staging || true && docker rm nodejs-staging || true'
-                    // Run the Docker container in detached mode
+                    sh 'docker ps -a --format "{{.Names}}" | grep nodejs-staging || true && docker stop nodejs-staging || true && docker rm nodejs-staging || true'
+                    // Run the Docker container in detached mode on the development server
                     sh 'docker run -d --name nodejs-staging -p 3000:3000 nodejs-app'
                     
                     // Push the Docker image to Docker Hub
@@ -48,9 +56,9 @@ pipeline {
             }
         }
         
-        stage('Deploy to Production') {
+        stage('Deploy to Production Server') {
             steps {
-                // Deploy to production server
+                // Deploy to production server using SSH
                 sshagent(['prod-ssh-key']) {
                     sh """
                     ssh prosecops@172.16.5.111 '
