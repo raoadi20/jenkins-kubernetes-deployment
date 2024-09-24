@@ -55,6 +55,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Manual Approval') {
+            steps {
+                script {
+                    // Wait for admin approval before deploying to production
+                    input message: 'Approve deployment to production?', 
+                          ok: 'Deploy', 
+                          submitter: 'admin' // The user who needs to approve, you can also leave it for any user
+                }
+            }
+        }
         
         stage('Deploy to Production Server') {
             steps {
