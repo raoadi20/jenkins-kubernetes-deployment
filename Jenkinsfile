@@ -37,7 +37,7 @@ pipeline {
                 script {
                     // Staging on Development Server
                     // Stop any existing container
-                    sh 'docker stop nodejs-staging || true && docker rm nodejs-staging || true'
+                    sh 'docker ps -a --format "{{.Names}}" | grep nodejs-prod || true && docker stop nodejs-staging || true && docker rm nodejs-staging || true'
                     // Run the Docker container in detached mode
                     sh 'docker run -d --name nodejs-staging -p 3000:3000 nodejs-app'
                     
