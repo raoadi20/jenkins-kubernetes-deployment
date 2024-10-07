@@ -72,7 +72,7 @@ pipeline {
                 // Deploy to production server using SSH
                 sshagent(['prod-ssh-key']) {
                     sh """
-                    ssh prosecops@172.16.5.75 '
+                    ssh -o StrictHostKeyChecking=no prosecops@172.16.5.75 '
                     docker ps -a --format "{{.Names}}" | grep nodejs-prod || true && docker stop nodejs-prod || true && docker rm nodejs-prod || true
                     docker pull raoadi20/nodejs-app
                     docker run -d --name nodejs-prod -p 3000:3000 raoadi20/nodejs-app
