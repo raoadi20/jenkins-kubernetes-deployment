@@ -9,13 +9,6 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
-            steps {
-                // Install dependencies using npm
-                sh 'npm install'
-            }
-        }
-        
         stage('Unit Test') {
             steps {
                 // Run unit tests using npm
