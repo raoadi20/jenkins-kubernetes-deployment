@@ -8,6 +8,13 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/raoadi20/jenkins-kubernetes-deployment.git'
             }
         }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install dependencies using npm
+                sh 'npm install'
+            }
+        }
         
         stage('Unit Test') {
             steps {
